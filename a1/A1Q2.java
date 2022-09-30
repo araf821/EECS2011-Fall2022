@@ -50,55 +50,49 @@ public class A1Q2 {
      */
     public static int solve(int[] arr) {
         // TODO: implement this function
-        A1Stack s = new A1Stack(); // The stack to hold all the elements before 1 in the arr.
-        int result = 0; // The number of elements that can be outputted in sorted order.
-        int indexOf1 = 0;
-        boolean found = false;
+        A1Stack s = new A1Stack();
+        int value = 1; // The number of elements that can be outputted in sorted order.
+        int indexOf1 = 0; // Keeps track of what the index of 1 is.
+
+        if (arr.length == 0)
+            return  0;
 
         for (int i = 0; i < arr.length; i++) {
-            if (arr[i] != 1) {
-                // If the value at current index isn't 1, add it to the stack.
+            // Add all the values before index of 1 to the stack.
+            if (arr[i] != value)
                 s.push(arr[i]);
-            } else {
-                // Else, record the index at which 1 is located and break the loop.
+            else {
+                // Once we've arrived at value 1, record the index for later use and stop the loop
                 indexOf1 = i;
                 break;
             }
         }
 
-        // If the 1 was in the last index, then we can return all the elements in sorted order.
-        if (s.size() == 0)
-            return arr.length; // returns the complete number of elements in the array
+        int totalSize = arr.length + s.size(); // The # of elements left after 1 that still need sorting
+        for (int i = indexOf1 + 1; i < totalSize; i++) {
+            // Only check for the arr[i] value if index at i exists in the array
+            if (i < arr.length && arr[i] == value + 1) {
+                value++;
 
-        // This loop will start incrementing our result.
-        while(true) { // Goes on until it is manually broken
+            // Only check for the s.pop() value if the stack isn't empty
+            } else if (!s.isEmpty() && s.pop() == value + 1) {
+                value++;
+                i--; // We may still need to check the current value of arr[i] after this iteration
 
-            // This loop checks if the next value appears in the array after index of 1.
-            for (int i = indexOf1; i < arr.length; i++) {
-                if (arr[i] == (result + 1)) {
-                    result++;
-                    found = true;
-                    break;
-                }
-            }
+            // If arr[i] doesn't contain the next value and neither does the stack,
+            // then we add the current arr[i] to the stack, if arr[i] exists
+            } else if (i < arr.length) {
+                s.push(arr[i]);
+                totalSize++;
 
-            // Now, if we haven't already found the next value in the array...
-            if (!found && s.size() > 0) { // if found is false
-                if (s.pop() == (result + 1)) {
-                    // increment result if the first out of the stack is the value we're looking for
-                    result++;
-                } else {
-                    break;
-                }
-            } else if (!found && s.size() == 0) {
+            // If all of the above fails, then we are done here.
+            } else {
                 break;
             }
+        } // End of the for loop
 
-            found = false; // reset for the next iteration
-        } // while loop ends here
-
-        return result;
-    }
+            return value;
+        }
 
     /**
      * This main function contains a couple of test cases that can be used to verify
@@ -117,7 +111,7 @@ public class A1Q2 {
         System.out.println(solve(arr3)); // Output should be 9
 
         int[] arr4 = {4, 1, 2, 5, 3};
-        System.out.println(solve(arr4)); // Output should be 5
+        System.out.println(solve(arr4)); // Output should be 3
 
         int[] arr5 = {7, 5, 2, 6, 3, 4, 1};
         System.out.println(solve(arr5)); // Output should be 1
@@ -127,5 +121,11 @@ public class A1Q2 {
 
         int[] arr7 = {};
         System.out.println(solve(arr7)); // Output should be 0
+
+        int[] arr8 = {1, 2, 5, 6, 4, 3};
+        System.out.println(solve(arr8)); // Output should be 4
+
+        int[] arr9 = {6, 5, 4, 3, 2, 1};
+        System.out.println(solve(arr9)); // Output should be 6
     }
 }
