@@ -51,7 +51,7 @@ public class A1Q2 {
     public static int solve(int[] arr) {
         // TODO: implement this function
         A1Stack s = new A1Stack(); // The stack to hold all the elements before 1 in the arr.
-        int result = 1; // The number of elements that can be outputted in sorted order.
+        int result = 0; // The number of elements that can be outputted in sorted order.
         int indexOf1 = 0;
         boolean found = false;
 
@@ -66,15 +66,15 @@ public class A1Q2 {
             }
         }
 
-//         If the 1 was in the last index, then we can return all the elements in sorted order.
+        // If the 1 was in the last index, then we can return all the elements in sorted order.
         if (s.size() == 0)
             return arr.length; // returns the complete number of elements in the array
 
         // This loop will start incrementing our result.
-        while(true) {
+        while(true) { // Goes on until it is manually broken
 
             // This loop checks if the next value appears in the array after index of 1.
-            for (int i = indexOf1 + 1; i < arr.length; i++) {
+            for (int i = indexOf1; i < arr.length; i++) {
                 if (arr[i] == (result + 1)) {
                     result++;
                     found = true;
