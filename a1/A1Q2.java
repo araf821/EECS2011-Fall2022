@@ -127,5 +127,8 @@ public class A1Q2 {
 
         int[] arr9 = {6, 5, 4, 3, 2, 1};
         System.out.println(solve(arr9)); // Output should be 6
+
+        int[] arr10 = {1, 2, 5, 4, 3, 6, 7};
+        System.out.println(solve(arr10)); // Output should be 4
     }
 }
